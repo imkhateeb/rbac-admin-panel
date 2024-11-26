@@ -57,6 +57,13 @@ const AddRole = ({ onClose }) => {
       return;
     }
 
+    for (let item of roles) {
+      if (role?.toLowerCase() === item.roleName?.toLowerCase()) {
+        errorToast("Role with this name already exists.");
+        return;
+      }
+    }
+
     const newRole = {
       roleName: role,
       description,

@@ -15,6 +15,7 @@ const AddUser = ({ onClose }) => {
 
   const { permissions } = useSelector((state) => state.permissions);
   const { roles } = useSelector((state) => state.roles);
+  const { users } = useSelector((state) => state.users);
 
   const hadleSubmit = () => {
     // Add validdations
@@ -25,7 +26,7 @@ const AddUser = ({ onClose }) => {
     const newUser = {
       name: firstName + " " + lastName,
       email,
-      phoneNumber: phone,
+      phoneNumber: `+${phone}`,
       isDeleted: false,
       isBlocked: false,
       isActive: true,
@@ -39,6 +40,13 @@ const AddUser = ({ onClose }) => {
       errorToast("You do not have permission to add a user.");
       onClose();
       return;
+    }
+
+    for (let user of users) {
+      if (user.email === email) {
+        errorToast("User with this email already exists");
+        return;
+      }
     }
 
     dispatch(addUser(newUser));
@@ -92,7 +100,12 @@ const AddUser = ({ onClose }) => {
               className="border-[1px] border-gray-300 py-2 px-3 rounded-lg w-[300px]"
               placeholder="Enter Phone..."
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => {
+                if (isNaN(e.target.value)) {
+                  return;
+                }
+                setPhone(e.target.value);
+              }}
             />
           </div>
         </div>

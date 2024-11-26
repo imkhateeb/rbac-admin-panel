@@ -160,7 +160,7 @@ const Profile = () => {
 
       {/* Permission details */}
       <div className="flex flex-col">
-        <p className="text-lg font-semibold">Roles and Responsibilities</p>
+        <p className="text-lg font-semibold">Roles and Permissions</p>
         <div className="flex flex-col gap-2">
           {/* Roles */}
           <div className="flex gap-2 w-full max-sm:flex-col">

@@ -8,7 +8,7 @@ const Home = () => {
         <ShieldCheck size={80} weight="fill" />
         <p className="text-xl font-semibold text-gray-500">Permisio</p>
         <p className="text-[50px] max-md:text-[40px] font-bold">
-          Simplifying dynamic access control effortlessly.
+          An Example of Simplifying dynamic access control effortlessly.
         </p>
         <Link
           to={"/admin"}

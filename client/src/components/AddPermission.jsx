@@ -26,7 +26,12 @@ const AddPermission = ({ onClose }) => {
       errorToast("Please fill in both fields before saving.");
       return;
     }
-
+    for (let permission of permissions) {
+      if (permission.rule?.toLowerCase() === ruleValue?.toLowerCase()) {
+        errorToast("Permission with this name already exists.");
+        return;
+      }
+    }
     const data = {
       rule: ruleValue,
       description: descriptionValue,
