@@ -42,7 +42,7 @@ const EditUserModal = ({ onClose, user }) => {
   return (
     <Modal>
       <div className="p-4 bg-white rounded-xl flex flex-col gap-4 max-h-[75vh] overflow-x-auto">
-        <p className="text-lg font-semibold">Add User</p>
+        <p className="text-lg font-semibold">Edit User</p>
         {/* 1st Row */}
         <div className="flex gap-4 flex-col">
           <div className="flex flex-col">

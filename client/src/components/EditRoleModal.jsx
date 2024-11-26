@@ -38,7 +38,7 @@ const EditRoleModal = ({ onClose, role }) => {
   return (
     <Modal>
       <div className="p-4 bg-white rounded-xl flex flex-col gap-4">
-        <p className="text-lg font-semibold">Add Role</p>
+        <p className="text-lg font-semibold">Edit Role</p>
         {/* 1st Row */}
         <div className="flex gap-4 flex-col">
           <div className="flex flex-col">

@@ -13,8 +13,8 @@ const Profile = () => {
   const setCurrentUser = () => {
     const user = {
       _id: "648b72b5d22e4c01b6a2f999",
-      name: "Admin User",
-      email: "admin.user@example.com",
+      name: "Example Admin",
+      email: "example.user@example.com",
       roles: ["648b72b5d22e4c01b6a2f101"],
       customPermissions: [
         "648b72b5d22e4c01b6a2f201",
@@ -133,7 +133,7 @@ const Profile = () => {
           can't.`}
         </p>
         <p className="text-gray-500 italic">
-          - You can change your roles and permissions for testing purpose.
+          - You can change your roles and permissions for performing operations.
         </p>
       </div>
       <div className="flex w-full items-center justify-center">
@@ -160,7 +160,7 @@ const Profile = () => {
 
       {/* Permission details */}
       <div className="flex flex-col">
-        <p className="text-lg font-semibold">Roles and Permissions</p>
+        <p className="text-lg font-semibold">Roles</p>
         <div className="flex flex-col gap-2">
           {/* Roles */}
           <div className="flex gap-2 w-full max-sm:flex-col">
@@ -197,6 +197,7 @@ const Profile = () => {
             </div>
           </div>
 
+          <p className="text-lg font-semibold mt-4">Custom Permissions</p>
           {/* Permission */}
           <div className="flex gap-2 w-full max-sm:flex-col">
             <div className="w-1/2 max-sm:w-full overflow-x-auto flex gap-2 rounded-lg">

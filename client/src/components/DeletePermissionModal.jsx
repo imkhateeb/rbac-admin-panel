@@ -21,7 +21,7 @@ const DeletePermissionModal = ({ onClose, permission }) => {
   return (
     <Modal>
       <div className="p-4 bg-white rounded-xl flex flex-col gap-4">
-        <p className="text-lg font-semibold">{`Delete ${"Khateeb"}'s account`}</p>
+        <p className="text-lg font-semibold">{`Delete ${permission?.rule} permission`}</p>
         <p className="text-gray-500 text-center">
           Are you sure you want to delete this user?
         </p>

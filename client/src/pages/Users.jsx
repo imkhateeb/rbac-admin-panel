@@ -139,7 +139,6 @@ const Users = () => {
       errorToast("You don't have permission to delete user");
       return;
     }
-
     setShowDeleteModal(user);
   };
 

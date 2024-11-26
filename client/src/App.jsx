@@ -6,7 +6,7 @@ import "./index.css";
 import "./App.css";
 import "./assets/styles/animations.css";
 import Admin from "./pages/Admin";
-import Login from "./pages/Login";
+import Guide from "./pages/Guide";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path="*" element={<Home />} />
           <Route path="/admin/*" element={<Admin />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/simulation-guide" element={<Guide />} />
         </Routes>
       </div>
     </div>

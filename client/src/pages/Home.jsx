@@ -10,6 +10,21 @@ const Home = () => {
         <p className="text-[50px] max-md:text-[40px] font-bold">
           An Example of Simplifying dynamic access control effortlessly.
         </p>
+        <div className="flex gap-2">
+          <a
+            target="_blank"
+            className="font-semibold underline cursor-pointer"
+            href="https://github.com/imkhateeb/role-based-admin-panel/tree/master?tab=readme-ov-file#permisio---a-role-based-access-control-rbac-ui"
+          >
+            Documentation
+          </a>
+          <Link
+            to={"/simulation-guide"}
+            className="font-semibold underline cursor-pointer"
+          >
+            Simulation Guide
+          </Link>
+        </div>
         <Link
           to={"/admin"}
           type="button"
