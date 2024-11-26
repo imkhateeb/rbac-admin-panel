@@ -170,22 +170,22 @@ if (isAddUserPermission(allRoles, allPermissions)) {
 A test admin user is initialized in local storage to simulate the functionalities:
 ```json
 {
-      _id: "648b72b5d22e4c01b6a2f999",
-      name: "Example Admin",
-      email: "example.user@example.com",
-      roles: ["648b72b5d22e4c01b6a2f101"],
-      customPermissions: [
-        "648b72b5d22e4c01b6a2f201",
-        "648b72b5d22e4c01b6a2f202",
-      ],
-      createdAt: "2024-11-24T14:30:00.000Z",
-      updatedAt: "2024-11-24T14:30:00.000Z",
-      lastLogin: "2024-11-24T14:30:00.000Z",
-      profilePicture: "https://example.com/profiles/admin_user.jpg",
-      phoneNumber: "+1234567890",
-      isDeleted: false,
-      isActive: true,
-      isBlocked: false,
+  "_id": "648b72b5d22e4c01b6a2f999",
+  "name": "Example Admin",
+  "email": "example.user@example.com",
+  "roles": ["648b72b5d22e4c01b6a2f101"],
+  "customPermissions": [
+    "648b72b5d22e4c01b6a2f201",
+    "648b72b5d22e4c01b6a2f202"
+  ],
+  "createdAt": "2024-11-24T14:30:00.000Z",
+  "updatedAt": "2024-11-24T14:30:00.000Z",
+  "lastLogin": "2024-11-24T14:30:00.000Z",
+  "profilePicture": "https://example.com/profiles/admin_user.jpg",
+  "phoneNumber": "+1234567890",
+  "isDeleted": false,
+  "isActive": true,
+  "isBlocked": false
 }
 ```
 
