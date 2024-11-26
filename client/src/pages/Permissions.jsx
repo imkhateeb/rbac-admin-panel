@@ -181,7 +181,7 @@ const Permissions = () => {
 
                       <div className="flex gap-1 items-center">
                         <p className="text-sm text-gray-500 text-nowrap">
-                          Ordere By:
+                          Order By:
                         </p>
                         <p className="text-sm text-gray-500 text-nowrap">
                           {sortBy.order.toUpperCase()}
