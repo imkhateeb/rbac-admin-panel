@@ -1,11 +1,19 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
 import { deletePermission } from "../redux/reducers/permissionsReducers";
-import { successToast } from "../utils/toasts";
+import { errorToast, successToast } from "../utils/toasts";
+import { isDeleteRulePermission } from "../utils/hasPermission";
 
 const DeletePermissionModal = ({ onClose, permission }) => {
   const dispatch = useDispatch();
+
+  const { roles } = useSelector((state) => state.roles);
+  const { permissions } = useSelector((state) => state.permissions);
   const handleDelete = () => {
+    if (!isDeleteRulePermission(roles, permissions)) {
+      errorToast("You do not have permission to delete a permission.");
+      return;
+    }
     dispatch(deletePermission(permission._id));
     successToast("Permission deleted successfully.");
     onClose();

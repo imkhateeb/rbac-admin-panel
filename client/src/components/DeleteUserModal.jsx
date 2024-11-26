@@ -1,11 +1,13 @@
 import { useDispatch } from "react-redux";
 import Modal from "./Modal";
 import { deleteUser } from "../redux/reducers/usersReducers";
+import { successToast } from "../utils/toasts";
 
 const DeleteUserModal = ({ onClose, user }) => {
   const dispatch = useDispatch();
   const handleDelete = () => {
     dispatch(deleteUser(user?._id));
+    successToast("User deleted successfully");
     onClose();
   };
   return (

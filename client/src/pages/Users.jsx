@@ -3,9 +3,9 @@ import { Switch } from "antd";
 import {
   DotsThreeVertical,
   Eye,
+  Funnel,
   PlusCircle,
-  SortAscending,
-  SortDescending,
+  XCircle,
 } from "@phosphor-icons/react";
 import AddUser from "../components/AddUser";
 import UserRolesModal from "../components/UserRolesModal";
@@ -44,6 +44,7 @@ const Users = () => {
   const [showPermissions, setShowPermissions] = useState(null);
   const [showEditModal, setShowEditModal] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const actionsRef = useRef(null);
   const dispatch = useDispatch();
@@ -53,7 +54,10 @@ const Users = () => {
   const { permissions } = useSelector((state) => state.permissions);
 
   // Sort states
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState({
+    title: "",
+    order: "",
+  });
 
   // Close popup when clicking outside
   useEffect(() => {
@@ -72,9 +76,56 @@ const Users = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setLoadingUser(true);
+    setAllUsers(users);
+    setLoadingUser(false);
+  }, [users]);
+
+  useEffect(() => {
+    sortUserList(allUsers);
+  }, [sortBy]);
+
+  const sortUserList = (users) => {
+    if (sortBy.title === "") return;
+
+    const sortedUsers = [...users].sort((a, b) => {
+      const valA = a[sortBy.title === "Name" ? "name" : "email"];
+      const valB = b[sortBy.title === "Name" ? "name" : "email"];
+
+      if (typeof valA === "number" && typeof valB === "number") {
+        return sortBy.order === "asc" ? valA - valB : valB - valA;
+      } else if (typeof valA === "string" && typeof valB === "string") {
+        return sortBy.order === "asc"
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      } else {
+        errorToast("Invalid data type to sort");
+        return 0;
+      }
+    });
+    setAllUsers(sortedUsers);
+  };
+
+  const handleSearchTerm = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+    if (searchTerm === "") {
+      setAllUsers(users);
+    } else {
+      const filteredUsers = users.filter(
+        (user) =>
+          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setAllUsers(filteredUsers);
+    }
+  };
+
   const handleChangeBlockStatus = (user) => {
     if (!isEditUserPermission(roles, permissions)) {
-      errorToast("You don't have permission to edit user");
+      errorToast("You don't have permission to modify user");
       return;
     }
 
@@ -92,41 +143,28 @@ const Users = () => {
     setShowDeleteModal(user);
   };
 
-  useEffect(() => {
-    setLoadingUser(true);
-    setAllUsers(users);
-    setLoadingUser(false);
-  }, [users]);
+  const handleClearSort = () => {
+    setSortBy({
+      title: "",
+      order: "",
+    });
+  };
 
-  const handleSearchTerm = (e) => {
-    const searchTerm = e.target.value;
-    if (searchTerm === "") {
-      setAllUsers(users);
-    } else {
-      const filteredUsers = users.filter(
-        (user) =>
-          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          user.phoneNumber.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setAllUsers(filteredUsers);
-    }
+  const handleClearSearchTerm = () => {
+    setSearchTerm("");
+    setAllUsers(users);
+    sortUserList(users);
   };
 
   return (
     <div className="flex flex-col gap-4 w-full h-full overflow-auto">
       {addUser && <AddUser onClose={() => setAddUser(false)} />}
       {showRoles && (
-        <UserRolesModal
-          onClose={() => setShowRoles(false)}
-          onSubmit={() => console.log("SUBMIT")}
-          user={showRoles}
-        />
+        <UserRolesModal onClose={() => setShowRoles(false)} user={showRoles} />
       )}
       {showPermissions && (
         <UserPermissionsModal
           onClose={() => setShowPermissions(false)}
-          onSubmit={() => console.log("SUBMIT")}
           user={showPermissions}
         />
       )}
@@ -158,6 +196,56 @@ const Users = () => {
               onClick={() => setAddUser(true)}
               className="cursor-pointer"
             />
+            {(sortBy.title !== "" || searchTerm !== "") && (
+              <div className="flex gap-4 items-center max-w-[400px] overflow-x-auto">
+                <div className="flex gap-3 items-center">
+                  {sortBy.title !== "" && (
+                    <div className="p-2 bg-gray-200 rounded-full font-semibold flex gap-4">
+                      <div className="flex gap-1 items-center">
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          Sort By:
+                        </p>
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          {sortBy.title}
+                        </p>
+                      </div>
+
+                      <div className="flex gap-1 items-center">
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          Ordere By:
+                        </p>
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          {sortBy.order.toUpperCase()}
+                        </p>
+                      </div>
+                      <p>
+                        <XCircle
+                          className="cursor-pointer"
+                          size={20}
+                          weight="fill"
+                          onClick={handleClearSort}
+                        />
+                      </p>
+                    </div>
+                  )}
+                  {searchTerm !== "" && (
+                    <div className="p-2 pl-4 bg-gray-200 rounded-full flex gap-1">
+                      <p className="text-sm text-gray-500 text-nowrap">
+                        {searchTerm}
+                      </p>
+                      <p>
+                        <XCircle
+                          className="cursor-pointer"
+                          size={20}
+                          weight="fill"
+                          onClick={handleClearSearchTerm}
+                        />
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="my-4" />
@@ -165,15 +253,6 @@ const Users = () => {
           <div className="flex flex-col gap-5 h-full">
             {/* Table Header */}
             <div className="flex">
-              <div className="w-[20px] mr-2 flex-shrink-0">
-                <input
-                  type="checkbox"
-                  name="select-all"
-                  id="select-all"
-                  className="cursor-pointer"
-                />
-              </div>
-
               {tableCol.map((col, idx) => (
                 <div
                   key={idx}
@@ -182,16 +261,31 @@ const Users = () => {
                 >
                   <div
                     className={`flex gap-1 items-center ${
-                      col.isCenter ? "items-center justify-center" : ""
+                      col.isCenter ? "justify-center" : ""
                     }`}
                   >
                     <p>{col.title}</p>
                     {col.isSort && (
-                      <div className="p-1 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
-                        {sortBy === col.title ? (
-                          <SortDescending size={20} weight="bold" />
+                      <div
+                        onClick={() => {
+                          if (sortBy.title === col.title) {
+                            setSortBy({
+                              title: col.title,
+                              order: sortBy.order === "asc" ? "desc" : "asc",
+                            });
+                          } else {
+                            setSortBy({
+                              title: col.title,
+                              order: "asc",
+                            });
+                          }
+                        }}
+                        className="p-1 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer"
+                      >
+                        {col.title === sortBy.title ? (
+                          <Funnel size={20} weight="fill" />
                         ) : (
-                          <SortAscending size={20} weight="bold" />
+                          <Funnel size={20} weight="bold" />
                         )}
                       </div>
                     )}
@@ -210,15 +304,6 @@ const Users = () => {
                 allUsers.map((user, idx) => {
                   return (
                     <div key={user?.name + idx} className="flex items-center">
-                      <div className="w-[20px] mr-2 flex-shrink-0">
-                        <input
-                          type="checkbox"
-                          name="select-all"
-                          id="select-all"
-                          className="cursor-pointer"
-                        />
-                      </div>
-
                       {tableCol.map((col, colIdx) => (
                         <div
                           key={colIdx}

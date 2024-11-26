@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Switch } from "antd";
 import {
   DotsThreeVertical,
-  Eye,
   PlusCircle,
-  SortAscending,
-  SortDescending,
+  Funnel,
+  XCircle,
 } from "@phosphor-icons/react";
 import AddPermission from "../components/AddPermission";
 import EditPermissionModal from "../components/EditPermissionModal";
@@ -22,7 +21,7 @@ const tableCol = [
   { title: "Rule", width: "200px", isSort: true, isCenter: false },
   { title: "Description", width: "400px", isSort: false, isCenter: false },
   { title: "Created At", width: "150px", isSort: true, isCenter: false },
-  { title: "Status", width: "150px", isSort: true, isCenter: true },
+  { title: "Status", width: "150px", isSort: false, isCenter: true },
   { title: "Actions", width: "100px", isSort: false, isCenter: true },
 ];
 
@@ -35,6 +34,8 @@ const Permissions = () => {
   const [showActions, setShowActions] = useState(null);
   const [deletePermission, setDeletePermission] = useState(null);
   const [editPermission, setEditPermission] = useState(null);
+  const [sortBy, setSortBy] = useState({ title: "", order: "" });
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { permissions } = useSelector((state) => state.permissions);
   const { roles } = useSelector((state) => state.roles);
@@ -59,6 +60,30 @@ const Permissions = () => {
     };
   }, []);
 
+  useEffect(() => {
+    handleSort(allRules);
+  }, [sortBy]);
+
+  const handleSort = (rules) => {
+    if (sortBy.title === "") {
+      return;
+    }
+    const sortedRules = [...rules].sort((a, b) => {
+      if (sortBy.order === "asc") {
+        return a[sortBy.title === "Rule" ? "rule" : "createdAt"] >
+          b[sortBy.title === "Rule" ? "rule" : "createdAt"]
+          ? 1
+          : -1;
+      } else {
+        return a[sortBy.title === "Rule" ? "rule" : "createdAt"] <
+          b[sortBy.title]
+          ? 1
+          : -1;
+      }
+    });
+    setAllRules(sortedRules);
+  };
+
   const handleDeletePermission = (permission) => {
     if (!isDeleteRulePermission(roles, permissions)) {
       errorToast("You do not have permission to delete a permission.");
@@ -70,7 +95,7 @@ const Permissions = () => {
 
   const handleChangeStatus = (permission) => {
     if (!isEditRulePermission(roles, permissions)) {
-      errorToast("You do not have permission to edit a permission.");
+      errorToast("You do not have permission to modify a permission.");
       return;
     }
 
@@ -85,6 +110,7 @@ const Permissions = () => {
   };
 
   const handleSearchTerm = (e) => {
+    setSearchTerm(e.target.value);
     const searchTerm = e.target.value;
     if (searchTerm === "") {
       setAllRules(permissions);
@@ -97,6 +123,15 @@ const Permissions = () => {
         rule.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setAllRules(filteredRules);
+  };
+
+  const handleClearSearchTerm = () => {
+    setSearchTerm("");
+    setAllRules(permissions);
+    handleSort(permissions);
+  };
+  const handleClearSort = () => {
+    setSortBy({ title: "", order: "" });
   };
 
   return (
@@ -130,6 +165,56 @@ const Permissions = () => {
               onClick={() => setAddRule(true)}
               className="cursor-pointer"
             />
+            {(sortBy.title !== "" || searchTerm !== "") && (
+              <div className="flex gap-4 items-center max-w-[400px] overflow-x-auto">
+                <div className="flex gap-3 items-center">
+                  {sortBy.title !== "" && (
+                    <div className="p-2 bg-gray-200 rounded-full font-semibold flex gap-4">
+                      <div className="flex gap-1 items-center">
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          Sort By:
+                        </p>
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          {sortBy.title}
+                        </p>
+                      </div>
+
+                      <div className="flex gap-1 items-center">
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          Ordere By:
+                        </p>
+                        <p className="text-sm text-gray-500 text-nowrap">
+                          {sortBy.order.toUpperCase()}
+                        </p>
+                      </div>
+                      <p>
+                        <XCircle
+                          className="cursor-pointer"
+                          size={20}
+                          weight="fill"
+                          onClick={handleClearSort}
+                        />
+                      </p>
+                    </div>
+                  )}
+                  {searchTerm !== "" && (
+                    <div className="p-2 pl-4 bg-gray-200 rounded-full flex gap-1">
+                      <p className="text-sm text-gray-500 text-nowrap">
+                        {searchTerm}
+                      </p>
+                      <p>
+                        <XCircle
+                          className="cursor-pointer"
+                          size={20}
+                          weight="fill"
+                          onClick={handleClearSearchTerm}
+                        />
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="my-4" />
@@ -137,15 +222,6 @@ const Permissions = () => {
           <div className="flex flex-col gap-5 h-full">
             {/* Table Header */}
             <div className="flex">
-              <div className="w-[20px] mr-2 flex-shrink-0">
-                <input
-                  type="checkbox"
-                  name="select-all"
-                  id="select-all"
-                  className="cursor-pointer"
-                />
-              </div>
-
               {tableCol.map((col, idx) => (
                 <div
                   key={idx}
@@ -159,8 +235,27 @@ const Permissions = () => {
                   >
                     <p>{col.title}</p>
                     {col.isSort && (
-                      <div className="p-1 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer">
-                        <SortAscending size={20} weight="bold" />
+                      <div
+                        onClick={() => {
+                          if (sortBy.title === col.title) {
+                            setSortBy({
+                              title: col.title,
+                              order: sortBy.order === "asc" ? "desc" : "asc",
+                            });
+                          } else {
+                            setSortBy({
+                              title: col.title,
+                              order: "asc",
+                            });
+                          }
+                        }}
+                        className="p-1 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer"
+                      >
+                        {col.title === sortBy.title ? (
+                          <Funnel size={20} weight="fill" />
+                        ) : (
+                          <Funnel size={20} weight="bold" />
+                        )}
                       </div>
                     )}
                   </div>
@@ -178,15 +273,6 @@ const Permissions = () => {
                 allRules.map((rule, idx) => {
                   return (
                     <div key={rule?.rule + idx} className="flex items-center">
-                      <div className="w-[20px] mr-2 flex-shrink-0">
-                        <input
-                          type="checkbox"
-                          name="select-all"
-                          id="select-all"
-                          className="cursor-pointer"
-                        />
-                      </div>
-
                       {tableCol.map((col, colIdx) => (
                         <div
                           key={colIdx}

@@ -22,7 +22,7 @@ const EditRoleModal = ({ onClose, role }) => {
     }
 
     if (!isEditRolePermission(roles, permissions)) {
-      errorToast("You do not have permission to edit a role.");
+      errorToast("You do not have permission to modify a role.");
       onClose();
       return;
     }

@@ -57,7 +57,7 @@ const UserPermissionsModal = ({ onClose, user }) => {
       return;
     }
     if (!isEditUserPermission(roles, permissions)) {
-      errorToast("You do not have permission to edit user roles");
+      errorToast("You do not have permission to modify user");
       return;
     }
 

@@ -40,8 +40,12 @@ const RolePermissionsModal = ({ onClose, role }) => {
   };
 
   const handleSubmit = () => {
+    if (finalPermissions.length === 0) {
+      errorToast("Please select at least one permission.");
+      return;
+    }
     if (!isEditRolePermission(roles, permissions)) {
-      errorToast("You do not have permission to edit a role.");
+      errorToast("You do not have permission to modify a role.");
       onClose();
       return;
     }
