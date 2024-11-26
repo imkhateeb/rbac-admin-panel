@@ -1,4 +1,5 @@
 # **Permisio - A Role-Based Access Control (RBAC) UI**
+![Screenshot 2024-11-26 203852](https://github.com/user-attachments/assets/b19aacad-2710-4164-8deb-a5305af3dcd8)
 
 ## **Project Overview**
 
@@ -74,6 +75,8 @@ The project demonstrates key RBAC features such as user management, role managem
      }
      ```
    - Actions: Add, Edit, Delete, Block, Assign Roles, Assign Permissions.
+   - ![Screenshot 2024-11-26 201725](https://github.com/user-attachments/assets/90060ea8-82d6-4335-b8e3-f9a90e93e92d)
+
 
 2. **Roles**
    - Example Fields:
@@ -95,6 +98,8 @@ The project demonstrates key RBAC features such as user management, role managem
      }
      ```
    - Actions: Add, Edit, Delete, Assign Permissions.
+   - ![Screenshot 2024-11-26 201847](https://github.com/user-attachments/assets/94d0cc87-3c4e-48c6-8bc1-34db49639301)
+
 
 3. **Permissions**
    - Example Fields:
@@ -108,6 +113,8 @@ The project demonstrates key RBAC features such as user management, role managem
      }
      ```
    - Actions: Add, Edit, Delete.
+   - ![Screenshot 2024-11-26 201923](https://github.com/user-attachments/assets/c602b29a-1f75-4091-b985-1aac47525e6b)
+
 
 ---
 
@@ -159,11 +166,13 @@ const hasPermission = (allRoles, allPermissions, rule) => {
 
 Example Usage:
 ```javascript
-if (isAddUserPermission(allRoles, allPermissions)) {
-  // Allow adding a user
-} else {
-  // Deny access
-}
+  const handleDeleteUser = (user) => {
+    if (!isDeleteUserPermission(roles, permissions)) {
+      errorToast("You don't have permission to delete user");
+      return;
+    }
+    setShowDeleteModal(user);
+  };
 ```
 
 ### **Mock Admin User**
@@ -188,6 +197,7 @@ A test admin user is initialized in local storage to simulate the functionalitie
   "isBlocked": false
 }
 ```
+![Screenshot 2024-11-26 202121](https://github.com/user-attachments/assets/5a1bd23a-6b9b-4669-98a3-66de7ce9d431)
 
 ### **Role and Permission Management**
 Roles and permissions are dynamically fetched and used to validate actions:
@@ -200,11 +210,11 @@ Roles and permissions are dynamically fetched and used to validate actions:
 ### **Steps to Run Locally**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/rbac-dashboard.git
+   git clone https://github.com/imkhateeb/rbac-admin-panel
    ```
 2. Navigate to the project directory:
    ```bash
-   cd rbac-dashboard
+   cd rbac-admin-panel/client
    ```
 3. Install dependencies:
    ```bash
@@ -216,7 +226,7 @@ Roles and permissions are dynamically fetched and used to validate actions:
    ```
 5. Open your browser and go to:
    ```
-   http://localhost:3000
+   http://localhost:5173
    ```
 
 ### **Environment**
@@ -225,19 +235,30 @@ No external backend server is required. All data is simulated using local storag
 ---
 
 ## **Screenshots**
-<!-- Add screenshots for the following views -->
 
 1. **User Management Dashboard**
-   ![User Management](#)
+   ![Screenshot 2024-11-26 202952](https://github.com/user-attachments/assets/06747217-4499-45c1-a1ea-299c456b4b52)
+   ![Screenshot 2024-11-26 202934](https://github.com/user-attachments/assets/32258d0b-0665-4a1a-87be-e50bcfeeabeb)
+   ![Screenshot 2024-11-26 203146](https://github.com/user-attachments/assets/2f4a1adb-29ac-4989-9b56-f65c4a05df62)
+   ![Screenshot 2024-11-26 203219](https://github.com/user-attachments/assets/0f020a9d-0c29-4146-9399-875d905e5efc)
+   ![Screenshot 2024-11-26 203256](https://github.com/user-attachments/assets/21703816-3849-4ace-88ed-38e7d6b98204)
+   ![Screenshot 2024-11-26 203336](https://github.com/user-attachments/assets/e8c9173b-8e2d-470e-9720-4dc846b4be0d)
    
-2. **Role Management Dashboard**
-   ![Role Management](#)
+4. **Role Management Dashboard**
+   ![Screenshot 2024-11-26 203419](https://github.com/user-attachments/assets/e815fda9-a719-4048-96f4-730ca802fe8f)
+   ![Screenshot 2024-11-26 203457](https://github.com/user-attachments/assets/41276f6b-4fad-4f54-8390-9e228912b4ad)
+   ![Screenshot 2024-11-26 203712](https://github.com/user-attachments/assets/2b2d9a28-f851-4a48-a3e2-505f493bc610)
+   ![Screenshot 2024-11-26 203811](https://github.com/user-attachments/assets/fe946383-6f96-49c5-af07-8bcfbf81e4aa)
 
-3. **Permission Management Dashboard**
-   ![Permission Management](#)
+5. **Permission Management Dashboard**
+   ![Screenshot 2024-11-26 204059](https://github.com/user-attachments/assets/b9ecb47b-adea-4fe3-b7de-73770cb39210)
+   ![Screenshot 2024-11-26 204155](https://github.com/user-attachments/assets/54408512-da16-45e5-8610-f1d1dbfabf79)
+   ![Screenshot 2024-11-26 204305](https://github.com/user-attachments/assets/8854e434-7876-4638-9614-ecf094f8686a)
+   ![Screenshot 2024-11-26 204344](https://github.com/user-attachments/assets/3cb78056-8da4-45c3-a204-95f354b8490a)
 
-4. **Permission Denied Example**
-   ![Permission Denied](#)
+7. **Permission Succeeded/Denied Example**
+   ![Screenshot 2024-11-26 204502](https://github.com/user-attachments/assets/bde462bf-6d20-4acc-858f-ef70b666e6c6)
+   ![Screenshot 2024-11-26 203115](https://github.com/user-attachments/assets/ec692b42-2e2c-4ffc-bf1d-e39351f8d0d1)
 
 ---
 
@@ -245,13 +266,17 @@ No external backend server is required. All data is simulated using local storag
 
 1. **Login Simulation**
    - A test admin user is automatically logged in when the application starts.
-   - Roles and permissions of the admin are dynamically fetched and stored.
+   - Roles and custom permissions of the admin are dynamically fetched and stored.
+   - You can add more custom permissions and roles to the admin.
+   - If needed add a new permission.
+        - Add it to admin's custome permissions
+        - Or assign that permission to a role and then assign that role to the admin.
 
 2. **Access Control**
-   - All actions on users, roles, and permissions are validated using the admin's assigned permissions.
+   - All actions on users, roles, and permissions are validated using the admin's assigned permissions and roles.
 
 3. **CRUD Operations**
-   - Simulated using React state and local storage.
+   - Simulated using state management library Redux Toolkit and local storage.
 
 4. **Validation**
    - Prevent unauthorized actions by validating permissions before executing functions.
