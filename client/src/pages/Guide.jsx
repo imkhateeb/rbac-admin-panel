@@ -249,7 +249,7 @@ const Guide = () => {
               <div className="flex flex-col gap-4">
                 <div className="p-2 flex flex-col gap-2">
                   <p className="text-lg font-semibold">
-                    Step-1 - Add a new permission.
+                    Step-1: Add a new permission.
                   </p>
                   <div className="px-2 flex flex-col gap-1">
                     <p>
@@ -258,10 +258,27 @@ const Guide = () => {
                     </p>
                     <p>
                       {" "}
-                      - Select a feature from the right side that you want to
-                      perform.
+                      - Select a permission from the feature list given in the
+                      right side that you want to perform.
                     </p>
-                    <p> - Select the permission.</p>
+                    <p> - Add that permission.</p>
+                  </div>
+                </div>
+                <div className="p-2 flex flex-col gap-2">
+                  <p className="text-lg font-semibold">
+                    Step-2: Add a new permission.
+                  </p>
+                  <div className="px-2 flex flex-col gap-1">
+                    <p>- Add the created permission to the test admin.</p>
+                    <p>- Then perform the operations.</p>
+                  </div>
+                </div>
+                <div className="p-2 flex flex-col gap-2">
+                  <p className="text-lg font-semibold">Step-3: Modify role.</p>
+                  <div className="px-2 flex flex-col gap-1">
+                    <p>- Assign that permission to a role.</p>
+                    <p>- Assign the role to test admin.</p>
+                    <p>- Then perform the operations.</p>
                   </div>
                 </div>
               </div>
